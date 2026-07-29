@@ -86,4 +86,4 @@ MoonRobots Gate 与它的区别如下：
 
 ## 身份隔离
 
-GitHub 和 Mooncakes 均已独立核对为账号 `2111950632`，参赛者为石子硕。本地仓库尚未配置远端。项目没有复用前两位参赛者的身份、仓库地址或申报文字。
+GitHub 和 Mooncakes 均已独立核对为账号 `2111950632`，参赛者为石子硕。公开仓库为 `https://github.com/2111950632/moonrobots-gate`，Mooncakes 包为 `2111950632/robots-gate`。项目没有复用前两位参赛者的身份、仓库地址或申报文字。
