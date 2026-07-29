@@ -1,0 +1,610 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "2111950632/robots-gate"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn access_probe(String, String, String) -> AccessProbe
+
+pub fn all_diagnostics(Policy) -> Array[Diagnostic]
+
+pub fn allowed_sitemap_entries(Policy, String, SitemapDocument) -> Array[SitemapEntry]
+
+pub fn annotated_policy(Policy) -> String
+
+pub fn audit(String, Array[String], Array[String]) -> PolicyAudit
+
+pub fn audit_default(String) -> PolicyAudit
+
+pub fn audit_exit_code(PolicyAudit) -> Int
+
+pub fn behavior_changes(PolicyDiff) -> Array[PolicyChange]
+
+pub fn behavior_flip_count(Array[MatrixComparison]) -> Int
+
+pub fn blocked_sitemap_entries(Policy, String, SitemapDocument) -> Array[SitemapEntry]
+
+pub fn build_probe_grid(Array[String], Array[String]) -> Array[AccessProbe]
+
+pub fn can_fetch(Policy, String, String) -> Bool
+
+pub fn canonical_url(String) -> String
+
+pub fn canonicalize(String) -> String
+
+pub fn compact_policy(Policy) -> String
+
+pub fn compare_matrices(DecisionMatrix, DecisionMatrix) -> Array[MatrixComparison]
+
+pub fn crawl_budget(Int, Int, Int, Int, Int) -> CrawlBudget
+
+pub fn crawl_delay(Policy, String) -> Int
+
+pub fn crawl_task(String, String, Int, Int, Int) -> CrawlTask
+
+pub fn cross_origin_entries(SitemapDocument, String) -> Array[SitemapEntry]
+
+pub fn decide(Policy, String, String) -> Decision
+
+pub fn default_crawl_budget() -> CrawlBudget
+
+pub fn default_lint_options() -> LintOptions
+
+pub fn default_outcomes(DecisionMatrix) -> Array[ProbeOutcome]
+
+pub fn default_parse_options() -> ParseOptions
+
+pub fn denied_outcomes(DecisionMatrix) -> Array[ProbeOutcome]
+
+pub fn diagnostics_at_least(Array[Diagnostic], Severity) -> Array[Diagnostic]
+
+pub fn diff_policies(Policy, Policy, Array[AccessProbe]) -> PolicyDiff
+
+pub fn discovered_crawl_task(String, String, Int, Int, Int, String) -> CrawlTask
+
+pub fn effective_rules(Policy, String) -> Array[Rule]
+
+pub fn find_outcome(DecisionMatrix, String) -> ProbeOutcome?
+
+pub fn has_diagnostic_code(Array[Diagnostic], String) -> Bool
+
+pub fn lint(Policy) -> Array[Diagnostic]
+
+pub fn lint_with_options(Policy, LintOptions) -> Array[Diagnostic]
+
+pub fn normalize_path(String) -> String
+
+pub fn normalize_percent_encoding(String) -> String
+
+pub fn parse(String) -> Policy
+
+pub fn parse_options(Int, Int, Int, Int, Int, Bool) -> ParseOptions
+
+pub fn parse_sitemap(String) -> SitemapDocument
+
+pub fn parse_url(String) -> ParsedUrl
+
+pub fn parse_with_options(String, ParseOptions) -> Policy
+
+pub fn plan_crawl(Policy, String, Array[CrawlTask], CrawlBudget) -> CrawlPlan
+
+pub fn rejected_for_reason(CrawlPlan, RejectionReason) -> Array[RejectedTask]
+
+pub fn remove_url_fragment(String) -> String
+
+pub fn render_audit_json(PolicyAudit) -> String
+
+pub fn render_audit_markdown(PolicyAudit) -> String
+
+pub fn render_blocked_sitemap_report(Policy, String, SitemapDocument) -> String
+
+pub fn render_crawl_plan(CrawlPlan) -> String
+
+pub fn render_decision_trace(Decision) -> String
+
+pub fn render_diagnostics(Array[Diagnostic]) -> String
+
+pub fn render_diff(PolicyDiff) -> String
+
+pub fn render_matrix_comparison(Array[MatrixComparison]) -> String
+
+pub fn render_matrix_csv(DecisionMatrix) -> String
+
+pub fn render_matrix_markdown(DecisionMatrix) -> String
+
+pub fn render_policy(Policy, RenderStyle) -> String
+
+pub fn render_policy_summary(Policy) -> String
+
+pub fn render_sitemap_summary(SitemapDocument) -> String
+
+pub fn robots_url_for(String) -> String
+
+pub fn run_matrix(Policy, Array[AccessProbe]) -> DecisionMatrix
+
+pub fn same_origin(String, String) -> Bool
+
+pub fn strict_lint_options() -> LintOptions
+
+pub fn strict_parse_options() -> ParseOptions
+
+pub fn structural_diff(Policy, Policy) -> PolicyDiff
+
+pub fn tasks_from_sitemap(SitemapDocument, Int) -> Array[CrawlTask]
+
+pub fn url_depth(String) -> Int
+
+pub fn url_has_query(String) -> Bool
+
+pub fn url_path(String) -> String
+
+// Errors
+
+// Types and methods
+pub struct AccessProbe {
+  name : String
+  agent : String
+  path : String
+} derive(Eq, @debug.Debug)
+pub fn AccessProbe::agent(Self) -> String
+pub fn AccessProbe::name(Self) -> String
+pub fn AccessProbe::path(Self) -> String
+
+pub(all) enum BehaviorChange {
+  UnchangedAllow
+  UnchangedDeny
+  BecameAllowed
+  BecameDenied
+  MissingBaseline
+} derive(Eq, @debug.Debug)
+pub fn BehaviorChange::label(Self) -> String
+
+pub(all) enum ChangeKind {
+  GroupAdded
+  GroupRemoved
+  RuleAdded
+  RuleRemoved
+  SitemapAdded
+  SitemapRemoved
+  HostAdded
+  HostRemoved
+  DelayChanged
+  AccessBecameAllowed
+  AccessBecameDenied
+} derive(Eq, @debug.Debug)
+pub fn ChangeKind::is_behavioral(Self) -> Bool
+pub fn ChangeKind::label(Self) -> String
+
+pub struct CrawlBudget {
+  max_requests : Int
+  max_bytes : Int
+  max_depth : Int
+  max_requests_per_host : Int
+  fallback_delay_millis : Int
+} derive(Eq, @debug.Debug)
+pub fn CrawlBudget::fallback_delay_millis(Self) -> Int
+pub fn CrawlBudget::max_bytes(Self) -> Int
+pub fn CrawlBudget::max_depth(Self) -> Int
+pub fn CrawlBudget::max_requests(Self) -> Int
+pub fn CrawlBudget::max_requests_per_host(Self) -> Int
+
+pub struct CrawlPlan {
+  accepted : Array[PlannedTask]
+  rejected : Array[RejectedTask]
+  total_estimated_bytes : Int
+  estimated_duration_millis : Int
+} derive(Eq, @debug.Debug)
+pub fn CrawlPlan::accepted(Self) -> Array[PlannedTask]
+pub fn CrawlPlan::accepted_count(Self) -> Int
+pub fn CrawlPlan::estimated_duration_millis(Self) -> Int
+pub fn CrawlPlan::rejected(Self) -> Array[RejectedTask]
+pub fn CrawlPlan::rejected_count(Self) -> Int
+pub fn CrawlPlan::total_estimated_bytes(Self) -> Int
+
+pub struct CrawlTask {
+  id : String
+  url : String
+  priority : Int
+  depth : Int
+  estimated_bytes : Int
+  discovered_from : String
+} derive(Eq, @debug.Debug)
+pub fn CrawlTask::depth(Self) -> Int
+pub fn CrawlTask::discovered_from(Self) -> String
+pub fn CrawlTask::estimated_bytes(Self) -> Int
+pub fn CrawlTask::id(Self) -> String
+pub fn CrawlTask::priority(Self) -> Int
+pub fn CrawlTask::url(Self) -> String
+
+pub struct Decision {
+  allowed : Bool
+  agent : String
+  path : String
+  normalized_path : String
+  rule_kind : RuleKind
+  rule_pattern : String
+  line : Int
+  reason : String
+  agent_specificity : Int
+  rule_specificity : Int
+  matched_groups : Int
+  trace : Array[DecisionStep]
+} derive(Eq, @debug.Debug)
+pub fn Decision::agent(Self) -> String
+pub fn Decision::agent_specificity(Self) -> Int
+pub fn Decision::allowed(Self) -> Bool
+pub fn Decision::line(Self) -> Int
+pub fn Decision::matched_groups(Self) -> Int
+pub fn Decision::normalized_path(Self) -> String
+pub fn Decision::path(Self) -> String
+pub fn Decision::reason(Self) -> String
+pub fn Decision::rule_kind(Self) -> RuleKind
+pub fn Decision::rule_pattern(Self) -> String
+pub fn Decision::rule_specificity(Self) -> Int
+pub fn Decision::summary(Self) -> String
+pub fn Decision::trace(Self) -> Array[DecisionStep]
+pub fn Decision::verdict(Self) -> String
+
+pub struct DecisionMatrix {
+  outcomes : Array[ProbeOutcome]
+  allowed_count : Int
+  denied_count : Int
+  default_count : Int
+} derive(Eq, @debug.Debug)
+pub fn DecisionMatrix::all_allowed(Self) -> Bool
+pub fn DecisionMatrix::allowed_count(Self) -> Int
+pub fn DecisionMatrix::default_count(Self) -> Int
+pub fn DecisionMatrix::denied_count(Self) -> Int
+pub fn DecisionMatrix::outcomes(Self) -> Array[ProbeOutcome]
+pub fn DecisionMatrix::total(Self) -> Int
+
+pub struct DecisionStep {
+  stage : String
+  detail : String
+} derive(Eq, @debug.Debug)
+pub fn DecisionStep::detail(Self) -> String
+pub fn DecisionStep::stage(Self) -> String
+pub fn DecisionStep::summary(Self) -> String
+
+pub struct Diagnostic {
+  severity : Severity
+  code : String
+  message : String
+  span : SourceSpan
+  hint : String
+} derive(Eq, @debug.Debug)
+pub fn Diagnostic::code(Self) -> String
+pub fn Diagnostic::hint(Self) -> String
+pub fn Diagnostic::line(Self) -> Int
+pub fn Diagnostic::message(Self) -> String
+pub fn Diagnostic::severity(Self) -> Severity
+pub fn Diagnostic::span(Self) -> SourceSpan
+pub fn Diagnostic::summary(Self) -> String
+
+pub struct Directive {
+  kind : DirectiveKind
+  key : String
+  value : String
+  raw : String
+  span : SourceSpan
+} derive(Eq, @debug.Debug)
+pub fn Directive::is_standard(Self) -> Bool
+pub fn Directive::key(Self) -> String
+pub fn Directive::kind(Self) -> DirectiveKind
+pub fn Directive::line(Self) -> Int
+pub fn Directive::raw(Self) -> String
+pub fn Directive::span(Self) -> SourceSpan
+pub fn Directive::value(Self) -> String
+
+pub(all) enum DirectiveKind {
+  UserAgentDirective
+  AllowDirective
+  DisallowDirective
+  SitemapDirective
+  CrawlDelayDirective
+  HostDirective
+  CleanParamDirective
+  UnknownDirective
+} derive(Eq, @debug.Debug)
+pub fn DirectiveKind::label(Self) -> String
+
+pub struct Group {
+  agents : Array[String]
+  rules : Array[Rule]
+  crawl_delay_millis : Int
+  start_line : Int
+  end_line : Int
+} derive(Eq, @debug.Debug)
+pub fn Group::agent_count(Self) -> Int
+pub fn Group::agents(Self) -> Array[String]
+pub fn Group::crawl_delay_millis(Self) -> Int
+pub fn Group::end_line(Self) -> Int
+pub fn Group::has_crawl_delay(Self) -> Bool
+pub fn Group::rule_count(Self) -> Int
+pub fn Group::rules(Self) -> Array[Rule]
+pub fn Group::start_line(Self) -> Int
+
+pub struct LintOptions {
+  require_wildcard_group : Bool
+  require_sitemap : Bool
+  warn_unknown_directives : Bool
+  max_crawl_delay_millis : Int
+  max_rules_per_group : Int
+} derive(Eq, @debug.Debug)
+pub fn LintOptions::max_crawl_delay_millis(Self) -> Int
+pub fn LintOptions::max_rules_per_group(Self) -> Int
+pub fn LintOptions::require_sitemap(Self) -> Bool
+pub fn LintOptions::require_wildcard_group(Self) -> Bool
+pub fn LintOptions::warn_unknown_directives(Self) -> Bool
+
+pub struct MatrixComparison {
+  name : String
+  before : ProbeOutcome?
+  after : ProbeOutcome
+  change : BehaviorChange
+} derive(Eq, @debug.Debug)
+pub fn MatrixComparison::after(Self) -> ProbeOutcome
+pub fn MatrixComparison::before(Self) -> ProbeOutcome?
+pub fn MatrixComparison::change(Self) -> BehaviorChange
+pub fn MatrixComparison::name(Self) -> String
+
+pub struct ParseOptions {
+  max_input_chars : Int
+  max_lines : Int
+  max_line_chars : Int
+  max_groups : Int
+  max_rules : Int
+  preserve_unknown : Bool
+} derive(Eq, @debug.Debug)
+pub fn ParseOptions::max_groups(Self) -> Int
+pub fn ParseOptions::max_input_chars(Self) -> Int
+pub fn ParseOptions::max_line_chars(Self) -> Int
+pub fn ParseOptions::max_lines(Self) -> Int
+pub fn ParseOptions::max_rules(Self) -> Int
+pub fn ParseOptions::preserve_unknown(Self) -> Bool
+
+pub struct ParsedUrl {
+  scheme : String
+  authority : String
+  host : String
+  port : Int
+  path_query : String
+  fragment : String
+  valid : Bool
+  error : String
+} derive(Eq, @debug.Debug)
+pub fn ParsedUrl::authority(Self) -> String
+pub fn ParsedUrl::error(Self) -> String
+pub fn ParsedUrl::fragment(Self) -> String
+pub fn ParsedUrl::host(Self) -> String
+pub fn ParsedUrl::origin(Self) -> String
+pub fn ParsedUrl::path_query(Self) -> String
+pub fn ParsedUrl::port(Self) -> Int
+pub fn ParsedUrl::robots_url(Self) -> String
+pub fn ParsedUrl::scheme(Self) -> String
+pub fn ParsedUrl::valid(Self) -> Bool
+pub fn ParsedUrl::without_fragment(Self) -> String
+
+pub struct PlannedTask {
+  task : CrawlTask
+  canonical_url : String
+  host : String
+  path : String
+  sequence : Int
+  not_before_millis : Int
+  decision : Decision
+} derive(Eq, @debug.Debug)
+pub fn PlannedTask::canonical_url(Self) -> String
+pub fn PlannedTask::decision(Self) -> Decision
+pub fn PlannedTask::host(Self) -> String
+pub fn PlannedTask::not_before_millis(Self) -> Int
+pub fn PlannedTask::path(Self) -> String
+pub fn PlannedTask::sequence(Self) -> Int
+pub fn PlannedTask::task(Self) -> CrawlTask
+
+pub struct Policy {
+  groups : Array[Group]
+  sitemaps : Array[String]
+  hosts : Array[String]
+  directives : Array[Directive]
+  diagnostics : Array[Diagnostic]
+  source_lines : Int
+  truncated : Bool
+} derive(Eq, @debug.Debug)
+pub fn Policy::diagnostic_count(Self) -> Int
+pub fn Policy::diagnostics(Self) -> Array[Diagnostic]
+pub fn Policy::directives(Self) -> Array[Directive]
+pub fn Policy::error_count(Self) -> Int
+pub fn Policy::group_count(Self) -> Int
+pub fn Policy::groups(Self) -> Array[Group]
+pub fn Policy::hosts(Self) -> Array[String]
+pub fn Policy::is_valid(Self) -> Bool
+pub fn Policy::rule_count(Self) -> Int
+pub fn Policy::sitemaps(Self) -> Array[String]
+pub fn Policy::source_lines(Self) -> Int
+pub fn Policy::stats(Self) -> PolicyStats
+pub fn Policy::truncated(Self) -> Bool
+pub fn Policy::warning_count(Self) -> Int
+
+pub struct PolicyAudit {
+  policy : Policy
+  diagnostics : Array[Diagnostic]
+  matrix : DecisionMatrix
+  risk_score : Int
+  grade : String
+  explicit_decisions : Int
+  default_decisions : Int
+} derive(Eq, @debug.Debug)
+pub fn PolicyAudit::default_decisions(Self) -> Int
+pub fn PolicyAudit::diagnostics(Self) -> Array[Diagnostic]
+pub fn PolicyAudit::explicit_decisions(Self) -> Int
+pub fn PolicyAudit::grade(Self) -> String
+pub fn PolicyAudit::matrix(Self) -> DecisionMatrix
+pub fn PolicyAudit::passed(Self) -> Bool
+pub fn PolicyAudit::policy(Self) -> Policy
+pub fn PolicyAudit::risk_score(Self) -> Int
+
+pub struct PolicyChange {
+  kind : ChangeKind
+  subject : String
+  before : String
+  after : String
+  line_before : Int
+  line_after : Int
+} derive(Eq, @debug.Debug)
+pub fn PolicyChange::after(Self) -> String
+pub fn PolicyChange::before(Self) -> String
+pub fn PolicyChange::kind(Self) -> ChangeKind
+pub fn PolicyChange::line_after(Self) -> Int
+pub fn PolicyChange::line_before(Self) -> Int
+pub fn PolicyChange::subject(Self) -> String
+pub fn PolicyChange::summary(Self) -> String
+
+pub struct PolicyDiff {
+  changes : Array[PolicyChange]
+  structural_count : Int
+  behavioral_count : Int
+} derive(Eq, @debug.Debug)
+pub fn PolicyDiff::behavioral_count(Self) -> Int
+pub fn PolicyDiff::changes(Self) -> Array[PolicyChange]
+pub fn PolicyDiff::is_empty(Self) -> Bool
+pub fn PolicyDiff::structural_count(Self) -> Int
+
+pub struct PolicyStats {
+  groups : Int
+  agents : Int
+  rules : Int
+  allows : Int
+  disallows : Int
+  sitemaps : Int
+  diagnostics : Int
+} derive(Eq, @debug.Debug)
+pub fn PolicyStats::agents(Self) -> Int
+pub fn PolicyStats::allows(Self) -> Int
+pub fn PolicyStats::diagnostics(Self) -> Int
+pub fn PolicyStats::disallows(Self) -> Int
+pub fn PolicyStats::groups(Self) -> Int
+pub fn PolicyStats::rules(Self) -> Int
+pub fn PolicyStats::sitemaps(Self) -> Int
+
+pub struct ProbeOutcome {
+  probe : AccessProbe
+  decision : Decision
+} derive(Eq, @debug.Debug)
+pub fn ProbeOutcome::allowed(Self) -> Bool
+pub fn ProbeOutcome::decision(Self) -> Decision
+pub fn ProbeOutcome::probe(Self) -> AccessProbe
+pub fn ProbeOutcome::summary(Self) -> String
+
+pub struct RejectedTask {
+  task : CrawlTask
+  reason : RejectionReason
+  detail : String
+} derive(Eq, @debug.Debug)
+pub fn RejectedTask::detail(Self) -> String
+pub fn RejectedTask::reason(Self) -> RejectionReason
+pub fn RejectedTask::task(Self) -> CrawlTask
+
+pub(all) enum RejectionReason {
+  InvalidUrl
+  RobotsDenied
+  DepthExceeded
+  RequestBudgetExceeded
+  ByteBudgetExceeded
+  HostBudgetExceeded
+  DuplicateUrl
+} derive(Eq, @debug.Debug)
+pub fn RejectionReason::label(Self) -> String
+
+pub(all) enum RenderStyle {
+  Canonical
+  Compact
+  Annotated
+} derive(Eq, @debug.Debug)
+pub fn RenderStyle::label(Self) -> String
+
+pub struct Rule {
+  kind : RuleKind
+  pattern : String
+  normalized_pattern : String
+  line : Int
+} derive(Eq, @debug.Debug)
+pub fn Rule::is_empty(Self) -> Bool
+pub fn Rule::kind(Self) -> RuleKind
+pub fn Rule::line(Self) -> Int
+pub fn Rule::normalized_pattern(Self) -> String
+pub fn Rule::pattern(Self) -> String
+pub fn Rule::specificity(Self) -> Int
+
+pub(all) enum RuleKind {
+  Allow
+  Disallow
+} derive(Eq, @debug.Debug)
+pub fn RuleKind::directive_name(Self) -> String
+pub fn RuleKind::label(Self) -> String
+pub fn RuleKind::tie_priority(Self) -> Int
+
+pub(all) enum Severity {
+  Info
+  Warning
+  Error
+} derive(Eq, @debug.Debug)
+pub fn Severity::label(Self) -> String
+pub fn Severity::rank(Self) -> Int
+
+pub struct SitemapDocument {
+  kind : SitemapKind
+  entries : Array[SitemapEntry]
+  child_sitemaps : Array[String]
+  diagnostics : Array[Diagnostic]
+  source_items : Int
+} derive(Eq, @debug.Debug)
+pub fn SitemapDocument::child_count(Self) -> Int
+pub fn SitemapDocument::child_sitemaps(Self) -> Array[String]
+pub fn SitemapDocument::diagnostics(Self) -> Array[Diagnostic]
+pub fn SitemapDocument::entries(Self) -> Array[SitemapEntry]
+pub fn SitemapDocument::entry_count(Self) -> Int
+pub fn SitemapDocument::is_valid(Self) -> Bool
+pub fn SitemapDocument::kind(Self) -> SitemapKind
+pub fn SitemapDocument::source_items(Self) -> Int
+
+pub struct SitemapEntry {
+  location : String
+  last_modified : String
+  change_frequency : String
+  priority_millis : Int
+  ordinal : Int
+} derive(Eq, @debug.Debug)
+pub fn SitemapEntry::change_frequency(Self) -> String
+pub fn SitemapEntry::has_last_modified(Self) -> Bool
+pub fn SitemapEntry::has_priority(Self) -> Bool
+pub fn SitemapEntry::last_modified(Self) -> String
+pub fn SitemapEntry::location(Self) -> String
+pub fn SitemapEntry::ordinal(Self) -> Int
+pub fn SitemapEntry::path(Self) -> String
+pub fn SitemapEntry::priority_millis(Self) -> Int
+
+pub(all) enum SitemapKind {
+  UrlSet
+  SitemapIndex
+  TextSitemap
+  UnknownSitemap
+} derive(Eq, @debug.Debug)
+pub fn SitemapKind::label(Self) -> String
+
+pub struct SourceSpan {
+  line : Int
+  column : Int
+  length : Int
+} derive(Eq, @debug.Debug)
+pub fn SourceSpan::column(Self) -> Int
+pub fn SourceSpan::length(Self) -> Int
+pub fn SourceSpan::line(Self) -> Int
+pub fn SourceSpan::summary(Self) -> String
+
+// Type aliases
+
+// Traits
+

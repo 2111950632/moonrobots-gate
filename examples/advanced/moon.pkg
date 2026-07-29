@@ -1,0 +1,5 @@
+import {
+  "2111950632/robots-gate" @gate,
+}
+
+pkgtype(kind: "executable")
