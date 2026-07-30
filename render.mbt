@@ -4,7 +4,7 @@ pub(all) enum RenderStyle {
   Canonical
   Compact
   Annotated
-} derive(Eq, Debug)
+} derive(Eq, Debug, Show)
 
 ///|
 pub fn RenderStyle::label(self : RenderStyle) -> String {
