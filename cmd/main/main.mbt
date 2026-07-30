@@ -5,7 +5,7 @@ fn usage() -> String {
     #|
     #|Usage:
     #|  moon run cmd/main -- decide <user-agent> <path>
-    #|  moon run cmd/main -- lint
+    #|  moon run cmd/main -- lint [strict]
     #|  moon run cmd/main -- normalize
     #|  moon run cmd/main -- matrix
     #|  moon run cmd/main -- sitemap
@@ -86,8 +86,13 @@ fn command_decide(args : Array[String], policy : @gate.Policy) -> Unit {
 }
 
 ///|
-fn command_lint(policy : @gate.Policy) -> Unit {
-  let diagnostics = @gate.all_diagnostics(policy)
+fn command_lint(args : Array[String], policy : @gate.Policy) -> Unit {
+  let options = if args.length() >= 3 && args[2] == "strict" {
+    @gate.strict_lint_options()
+  } else {
+    @gate.default_lint_options()
+  }
+  let diagnostics = @gate.all_diagnostics_with_options(policy, options)
   println(@gate.render_policy_summary(policy))
   if diagnostics.length() == 0 {
     println("No diagnostics.")
@@ -171,7 +176,7 @@ fn main {
   let policy = @gate.parse(policy_input())
   match args[1] {
     "decide" => command_decide(args, policy)
-    "lint" => command_lint(policy)
+    "lint" => command_lint(args, policy)
     "normalize" => command_normalize(policy)
     "matrix" => command_matrix(policy)
     "sitemap" => command_sitemap(policy)

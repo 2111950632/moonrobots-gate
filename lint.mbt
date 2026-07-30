@@ -466,15 +466,23 @@ pub fn lint(policy : Policy) -> Array[Diagnostic] {
 }
 
 ///|
-pub fn all_diagnostics(policy : Policy) -> Array[Diagnostic] {
+pub fn all_diagnostics_with_options(
+  policy : Policy,
+  options : LintOptions,
+) -> Array[Diagnostic] {
   let output : Array[Diagnostic] = []
   for diagnostic in policy.diagnostics {
     output.push(diagnostic)
   }
-  for diagnostic in lint(policy) {
+  for diagnostic in lint_with_options(policy, options) {
     output.push(diagnostic)
   }
   output
+}
+
+///|
+pub fn all_diagnostics(policy : Policy) -> Array[Diagnostic] {
+  all_diagnostics_with_options(policy, default_lint_options())
 }
 
 ///|

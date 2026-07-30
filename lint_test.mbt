@@ -186,3 +186,21 @@ test "diagnostic severity filtering keeps warnings and errors" {
   )
   inspect(filtered.length() > 0, content="true")
 }
+
+///|
+test "strict combined diagnostics require sitemap" {
+  let policy = @robots-gate.parse(
+    (
+      #|User-agent: *
+      #|Allow: /
+    ),
+  )
+  let diagnostics = @robots-gate.all_diagnostics_with_options(
+    policy,
+    @robots-gate.strict_lint_options(),
+  )
+  inspect(
+    @robots-gate.has_diagnostic_code(diagnostics, "LNT003"),
+    content="true",
+  )
+}
