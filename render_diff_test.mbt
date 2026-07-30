@@ -185,7 +185,10 @@ test "matrix renders Markdown and CSV" {
 
 ///|
 test "render style parser accepts supported styles" {
-  inspect(@robots-gate.parse_render_style("compact").unwrap(), content="Compact")
+  inspect(
+    @robots-gate.parse_render_style("compact").unwrap(),
+    content="Compact",
+  )
   inspect(
     @robots-gate.parse_render_style("annotated").unwrap(),
     content="Annotated",
