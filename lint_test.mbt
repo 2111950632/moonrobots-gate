@@ -204,3 +204,33 @@ test "strict combined diagnostics require sitemap" {
     content="true",
   )
 }
+
+///|
+test "linter rejects relative sitemap URLs" {
+  let policy = @robots-gate.parse(
+    (
+      #|User-agent: *
+      #|Allow: /
+      #|Sitemap: /sitemap.xml
+    ),
+  )
+  inspect(
+    @robots-gate.has_diagnostic_code(@robots-gate.lint(policy), "LNT021"),
+    content="true",
+  )
+}
+
+///|
+test "linter accepts absolute HTTPS sitemap URLs" {
+  let policy = @robots-gate.parse(
+    (
+      #|User-agent: *
+      #|Allow: /
+      #|Sitemap: https://example.com/sitemap.xml
+    ),
+  )
+  inspect(
+    @robots-gate.has_diagnostic_code(@robots-gate.lint(policy), "LNT021"),
+    content="false",
+  )
+}

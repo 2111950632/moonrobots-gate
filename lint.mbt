@@ -435,7 +435,17 @@ pub fn lint_with_options(
   }
   for sitemap in policy.sitemaps {
     let parsed = parse_url(sitemap)
-    if parsed.valid && parsed.fragment.length() > 0 {
+    if !parsed.valid() {
+      output.push(
+        lint_diag(
+          Warning,
+          "LNT021",
+          "sitemap directive is not a valid absolute HTTP or HTTPS URL",
+          sitemap_directive_line(policy, sitemap),
+          "Use an absolute URL such as https://example.com/sitemap.xml.",
+        ),
+      )
+    } else if parsed.fragment().length() > 0 {
       output.push(
         lint_diag(
           Warning,
