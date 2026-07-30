@@ -3,7 +3,7 @@
 
 name = "2111950632/robots-gate"
 
-version = "0.2.0"
+version = "0.2.1"
 
 readme = "README.md"
 
