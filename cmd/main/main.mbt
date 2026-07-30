@@ -6,7 +6,7 @@ fn usage() -> String {
     #|Usage:
     #|  moon run cmd/main -- decide <user-agent> <path>
     #|  moon run cmd/main -- lint [strict]
-    #|  moon run cmd/main -- normalize
+    #|  moon run cmd/main -- normalize [canonical|compact|annotated]
     #|  moon run cmd/main -- matrix
     #|  moon run cmd/main -- sitemap
     #|  moon run cmd/main -- plan
@@ -102,8 +102,15 @@ fn command_lint(args : Array[String], policy : @gate.Policy) -> Unit {
 }
 
 ///|
-fn command_normalize(policy : @gate.Policy) -> Unit {
-  println(@gate.render_policy(policy, @gate.Canonical))
+fn command_normalize(args : Array[String], policy : @gate.Policy) -> Unit {
+  let style_name = if args.length() >= 3 { args[2] } else { "canonical" }
+  match @gate.parse_render_style(style_name) {
+    Ok(style) => println(@gate.render_policy(policy, style))
+    Err(message) => {
+      println(message)
+      println("supported styles: canonical, compact, annotated")
+    }
+  }
 }
 
 ///|
@@ -177,7 +184,7 @@ fn main {
   match args[1] {
     "decide" => command_decide(args, policy)
     "lint" => command_lint(args, policy)
-    "normalize" => command_normalize(policy)
+    "normalize" => command_normalize(args, policy)
     "matrix" => command_matrix(policy)
     "sitemap" => command_sitemap(policy)
     "plan" => command_plan(policy)

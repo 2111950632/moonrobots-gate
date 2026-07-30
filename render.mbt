@@ -182,3 +182,13 @@ pub fn render_policy_summary(policy : Policy) -> String {
   output.write_string("parse diagnostics: \{stats.diagnostics}\n")
   output.to_string()
 }
+
+///|
+pub fn parse_render_style(input : String) -> Result[RenderStyle, String] {
+  match input {
+    "canonical" => Ok(Canonical)
+    "compact" => Ok(Compact)
+    "annotated" => Ok(Annotated)
+    _ => Err("unknown render style: \{input}")
+  }
+}

@@ -182,3 +182,20 @@ test "matrix renders Markdown and CSV" {
     content="true",
   )
 }
+
+///|
+test "render style parser accepts supported styles" {
+  inspect(@robots-gate.parse_render_style("compact").unwrap(), content="Compact")
+  inspect(
+    @robots-gate.parse_render_style("annotated").unwrap(),
+    content="Annotated",
+  )
+}
+
+///|
+test "render style parser rejects unknown styles" {
+  match @robots-gate.parse_render_style("pretty") {
+    Ok(_) => inspect("ok", content="error")
+    Err(message) => inspect(message, content="unknown render style: pretty")
+  }
+}
